@@ -1,4 +1,4 @@
-export type ProjectAccent = "purple" | "cyan" | "green" | "slate" | "amber";
+﻿export type ProjectAccent = "purple" | "cyan" | "green" | "slate" | "amber";
 
 export type CaseStudy = {
   problem: string;
@@ -54,7 +54,7 @@ export const projects: Project[] = [
     accent: "purple",
     icon: "cloud",
     image: null, // t.ex. "/projects/atmosphere-plus.png"
-    fallbackStats: { stars: 4, forks: 1, updatedLabel: "2 dagar sedan" },
+    fallbackStats: { stars: 0, forks: 0, updatedLabel: "nyligen" },
   },
   {
     title: "BlockReskinner",
@@ -77,7 +77,7 @@ export const projects: Project[] = [
     accent: "cyan",
     icon: "brush",
     image: null, // t.ex. "/projects/blockreskinner.png"
-    fallbackStats: { stars: 2, forks: 0, updatedLabel: "2 dagar sedan" },
+    fallbackStats: { stars: 0, forks: 0, updatedLabel: "nyligen" },
   },
   {
     title: "TradeCycler",
@@ -100,7 +100,7 @@ export const projects: Project[] = [
     accent: "green",
     icon: "repeat",
     image: null, // t.ex. "/projects/tradecycler.png"
-    fallbackStats: { stars: 3, forks: 1, updatedLabel: "1 vecka sedan" },
+    fallbackStats: { stars: 0, forks: 0, updatedLabel: "nyligen" },
   },
   {
     title: "MinecraftDev Fork",
@@ -123,7 +123,7 @@ export const projects: Project[] = [
     accent: "slate",
     icon: "wrench",
     image: null, // t.ex. "/projects/minecraftdev-fork.png"
-    fallbackStats: { stars: 2, forks: 0, updatedLabel: "3 veckor sedan" },
+    fallbackStats: { stars: 0, forks: 0, updatedLabel: "nyligen" },
   },
   {
     title: "Villager Pickup",
@@ -146,6 +146,6 @@ export const projects: Project[] = [
     accent: "amber",
     icon: "package",
     image: null, // t.ex. "/projects/villager-pickup.png"
-    fallbackStats: { stars: 1, forks: 0, updatedLabel: "1 månad sedan" },
+    fallbackStats: { stars: 0, forks: 0, updatedLabel: "nyligen" },
   },
 ];

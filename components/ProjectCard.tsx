@@ -152,6 +152,7 @@ export default function ProjectCard({
           </a>
           <button
             type="button"
+            id={`${panelId}-trigger`}
             onClick={onToggle}
             aria-expanded={active}
             aria-controls={panelId}

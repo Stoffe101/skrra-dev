@@ -1,19 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import { Menu, MoonStar, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
 
 const links = [
-  { label: "Home", href: "#home" },
-  { label: "Projects", href: "#projects" },
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "Contact", href: "#contact" },
+  { label: "Hem", href: "#home" },
+  { label: "Projekt", href: "#projects" },
+  { label: "Om mig", href: "#about" },
+  { label: "Kompetens", href: "#skills" },
+  { label: "Erfarenhet", href: "#experience" },
+  { label: "Kontakt", href: "#contact" },
 ];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-ink/80 backdrop-blur-md">
@@ -43,17 +56,11 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
-          <span
-            aria-hidden
-            className="ml-2 rounded-lg border border-line bg-panel p-2 text-mist"
-            title="Mörkt tema"
-          >
-            <MoonStar size={15} />
-          </span>
         </div>
 
         <button
           type="button"
+          ref={menuButtonRef}
           className="rounded-md p-2 text-mist hover:text-snow focus-visible:outline-2 focus-visible:outline-violet-400 md:hidden"
           aria-expanded={open}
           aria-label={open ? "Stäng meny" : "Öppna meny"}

@@ -1,6 +1,5 @@
 import { FileText, Mail, Send } from "lucide-react";
-
-const EMAIL = "hej@christofferloof.se";
+import { site } from "@/data/site";
 
 export default function ContactCTA() {
   return (
@@ -30,14 +29,14 @@ export default function ContactCTA() {
 
           <div className="flex flex-wrap gap-3">
             <a
-              href={`mailto:${EMAIL}`}
+              href={`mailto:${site.email}`}
               className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-violet-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-300"
             >
               <Mail size={16} aria-hidden />
               Skicka ett mail
             </a>
             <a
-              href="/cv.pdf"
+              href={site.cvPath}
               className="inline-flex items-center gap-2 rounded-xl border border-line-strong bg-ink/60 px-5 py-2.5 text-sm font-medium text-snow transition-colors hover:bg-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-300"
             >
               <FileText size={16} aria-hidden />

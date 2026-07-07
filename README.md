@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# skrra.dev
 
-## Getting Started
+Personal developer portfolio for **Christoffer Lööf** — system developer student focused on testing, QA, automation, Java and Minecraft/Fabric modding. Live at [skrra.dev](https://skrra.dev).
 
-First, run the development server:
+The site is designed as a dark "developer lab / GitHub dashboard" rather than a traditional portfolio: a terminal-style hero, live GitHub statistics, case-study project cards and an activity feed.
+
+## Tech stack
+
+- [Next.js 16](https://nextjs.org) (App Router, TypeScript)
+- [Tailwind CSS v4](https://tailwindcss.com) (CSS-first config via `@theme`)
+- [lucide-react](https://lucide.dev) for icons
+- Custom SVG donut chart (no chart library)
+- Deployed on Vercel
+
+## Features
+
+- **Terminal hero** — syntax-highlighted `whoami` card with line numbers
+- **Featured projects** — curated project data merged with live GitHub metadata (stars, forks, last push), with expandable full-width case-study panels
+- **GitHub dashboard** — profile stats, most-used languages chart and a recent activity feed built from the GitHub REST API
+- **Timeline** — education & experience with status badges
+- **Fully static** — the page is prerendered and revalidated hourly (ISR)
+
+## GitHub integration
+
+All GitHub data is fetched **server-side** in [`lib/github.ts`](lib/github.ts):
+
+- Uses the public REST API (`/users`, `/repos`, `/events/public`)
+- Responses are cached for one hour (`next: { revalidate: 3600 }`) to stay fast and avoid rate limits
+- An optional `GITHUB_TOKEN` raises the rate limit; it is only read on the server and never shipped to the client
+- If the API is unreachable, the site falls back to neutral placeholder data instead of breaking — no invented numbers, and the dashboard notes that live data could not be refreshed
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.env.example` to `.env.local`:
 
-## Learn More
+| Variable          | Required | Description                                      |
+| ----------------- | -------- | ------------------------------------------------ |
+| `GITHUB_USERNAME` | No       | GitHub account to display (defaults to Stoffe101) |
+| `GITHUB_TOKEN`    | No       | Personal access token for a higher API rate limit |
 
-To learn more about Next.js, take a look at the following resources:
+### Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev     # development server
+npm run build   # production build
+npm run lint    # eslint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project structure
 
-## Deploy on Vercel
+```
+app/          # App Router pages, layout, metadata, robots, sitemap, OG image
+components/   # UI components (Navbar, Hero, ProjectShowcase, GitHubSection, ...)
+data/         # Site config, project/skill/timeline content
+lib/          # GitHub API client and formatting helpers
+public/       # Static assets, CV (/cv.pdf), project screenshots
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Site-wide contact details and URLs live in [`data/site.ts`](data/site.ts) — change them once there.

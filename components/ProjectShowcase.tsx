@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { CaseStudy, ProjectAccent } from "@/data/projects";
 import CaseStudyPanel from "./CaseStudyPanel";
 import ProjectCard, { type ProjectIconKey } from "./ProjectCard";
@@ -37,6 +37,22 @@ export default function ProjectShowcase({
   const toggle = (title: string) =>
     setSelected((current) => (current === title ? null : title));
 
+  // Stänger panelen och lämnar tillbaka fokus till kortets "Läs mer"-knapp.
+  const close = (title: string) => {
+    setSelected(null);
+    const trigger = document.getElementById(`${panelIdFor(title)}-trigger`);
+    requestAnimationFrame(() => trigger?.focus());
+  };
+
+  useEffect(() => {
+    if (!selected) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") close(selected);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [selected]);
+
   return (
     <div className="space-y-5">
       {rows.map((row, rowIndex) => {
@@ -71,7 +87,7 @@ export default function ProjectShowcase({
                         title={project.title}
                         icon={project.icon}
                         caseStudy={project.caseStudy}
-                        onClose={() => setSelected(null)}
+                        onClose={() => close(project.title)}
                       />
                     </div>
                   )}
@@ -86,7 +102,7 @@ export default function ProjectShowcase({
                   title={selectedProject.title}
                   icon={selectedProject.icon}
                   caseStudy={selectedProject.caseStudy}
-                  onClose={() => setSelected(null)}
+                  onClose={() => close(selectedProject.title)}
                 />
               </div>
             )}

@@ -1,8 +1,9 @@
 import { ArrowRight, Check } from "lucide-react";
+import { site } from "@/data/site";
 import Timeline from "./Timeline";
 
 const checklist = [
-  "Studerar Systemutvecklare (inr. Testing) – YH-utbildning",
+  "Studerar Systemutvecklare med inriktning test – Jensen Yrkeshögskola",
   "Intresserad av QA, automation och cybersäkerhet",
   "Erfarenhet från projekt, GitHub och praktisk felsökning",
   "Bakgrund inom service, försäljning och IT-supportliknande arbete",
@@ -47,10 +48,10 @@ export default function AboutSection() {
           </ul>
 
           <a
-            href="/cv.pdf"
+            href={site.cvPath}
             className="mt-8 inline-flex w-fit items-center gap-2 rounded-xl border border-line bg-panel-strong px-4 py-2 text-sm text-snow transition-colors hover:border-line-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
           >
-            Läs mer om mig
+            Visa CV
             <ArrowRight size={15} aria-hidden />
           </a>
         </div>

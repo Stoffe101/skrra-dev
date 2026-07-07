@@ -30,7 +30,7 @@ const lines: Line[] = [
     no: "04",
     tokens: [
       { t: "  role: ", c: KEY },
-      { t: '"Systemutvecklare (inr. Testing)"', c: STR },
+      { t: '"Systemutvecklare (inr. test)"', c: STR },
       { t: ",", c: PUNCT },
     ],
   },

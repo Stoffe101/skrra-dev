@@ -1,12 +1,13 @@
 import { cache } from "react";
+import { site } from "@/data/site";
 import { timeAgo } from "./format";
 
 const GITHUB_API = "https://api.github.com";
-const DEFAULT_USERNAME = "Stoffe101";
 /** GitHub-data cachas i en timme för att undvika rate limits. */
 const REVALIDATE_SECONDS = 3600;
 
-export const githubUsername = process.env.GITHUB_USERNAME || DEFAULT_USERNAME;
+export const githubUsername =
+  process.env.GITHUB_USERNAME || site.githubUsername;
 export const githubProfileUrl = `https://github.com/${githubUsername}`;
 
 export type GitHubProfile = {
@@ -64,37 +65,35 @@ const LANGUAGE_COLORS: Record<string, string> = {
 };
 const OTHER_COLOR = "#64748b";
 
+/**
+ * Visas när GitHub API inte går att nå. Medvetet oprecist – inga påhittade
+ * exakta siffror eller tidsstämplar. Komponenterna renderar "–" för
+ * profilsiffror när isFallback är satt.
+ */
 const FALLBACK_DATA: GitHubData = {
   profile: {
     username: githubUsername,
     url: githubProfileUrl,
-    publicRepos: 12,
-    followers: 6,
-    following: 1,
+    publicRepos: 0,
+    followers: 0,
+    following: 0,
     bio: "Java & Minecraft-fokuserade projekt med passion för problemlösning, modding och automation.",
     isFallback: true,
   },
   languages: [
-    { name: "Java", percent: 62.3, color: LANGUAGE_COLORS.Java },
-    { name: "TypeScript", percent: 12.4, color: LANGUAGE_COLORS.TypeScript },
-    { name: "Python", percent: 8.7, color: LANGUAGE_COLORS.Python },
-    { name: "CSS", percent: 6.2, color: LANGUAGE_COLORS.CSS },
-    { name: "Övrigt", percent: 10.4, color: OTHER_COLOR },
+    { name: "Java", percent: 60, color: LANGUAGE_COLORS.Java },
+    { name: "TypeScript", percent: 15, color: LANGUAGE_COLORS.TypeScript },
+    { name: "Python", percent: 10, color: LANGUAGE_COLORS.Python },
+    { name: "CSS", percent: 5, color: LANGUAGE_COLORS.CSS },
+    { name: "Övrigt", percent: 10, color: OTHER_COLOR },
   ],
   activity: [
-    { kind: "push", title: "Pushed to Atmosphere+", when: "2 dagar sedan" },
-    {
-      kind: "release",
-      title: "Created release v0.3.0-beta.8",
-      detail: "Atmosphere+",
-      when: "4 dagar sedan",
-    },
-    { kind: "code", title: "Updated TradeCycler UI", when: "1 vecka sedan" },
+    { kind: "push", title: "Pushade till Atmosphere+", when: "nyligen" },
+    { kind: "code", title: "Uppdaterade BlockReskinner", when: "nyligen" },
     {
       kind: "wrench",
-      title: "Fixed Gradle wrapper generation",
-      detail: "MinecraftDev Fork",
-      when: "3 veckor sedan",
+      title: "Arbete i MinecraftDev Fork",
+      when: "nyligen",
     },
   ],
   repoStats: {},

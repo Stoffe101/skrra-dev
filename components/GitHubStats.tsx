@@ -24,7 +24,7 @@ export default function GitHubStats({ profile }: { profile: GitHubProfile }) {
         {stats.map((stat) => (
           <div key={stat.label}>
             <dd className="text-3xl font-bold text-violet-300">
-              {stat.value}
+              {profile.isFallback ? "–" : stat.value}
             </dd>
             <dt className="mt-1 text-xs text-faint">{stat.label}</dt>
           </div>
@@ -32,6 +32,12 @@ export default function GitHubStats({ profile }: { profile: GitHubProfile }) {
       </dl>
 
       <p className="mt-5 text-sm leading-relaxed text-mist">{profile.bio}</p>
+
+      {profile.isFallback && (
+        <p className="mt-3 text-xs text-faint">
+          GitHub-data kunde inte uppdateras just nu.
+        </p>
+      )}
 
       <a
         href={profile.url}

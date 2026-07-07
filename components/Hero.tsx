@@ -1,15 +1,17 @@
 import { ArrowRight, Download, Mail } from "lucide-react";
+import { site } from "@/data/site";
 import { GitHubIcon, LinkedInIcon } from "./BrandIcons";
 import TerminalCard from "./TerminalCard";
 
-const EMAIL = "hej@christofferloof.se";
-const LINKEDIN_URL = "https://www.linkedin.com/in/christoffer-loof";
-const GITHUB_URL = "https://github.com/Stoffe101";
-
 const socials = [
-  { label: "GitHub", href: GITHUB_URL, icon: GitHubIcon, external: true },
-  { label: "LinkedIn", href: LINKEDIN_URL, icon: LinkedInIcon, external: true },
-  { label: "Email", href: `mailto:${EMAIL}`, icon: Mail, external: false },
+  { label: "GitHub", href: site.githubUrl, icon: GitHubIcon, external: true },
+  {
+    label: "LinkedIn",
+    href: site.linkedinUrl,
+    icon: LinkedInIcon,
+    external: true,
+  },
+  { label: "Email", href: `mailto:${site.email}`, icon: Mail, external: false },
 ];
 
 export default function Hero() {
@@ -48,7 +50,7 @@ export default function Hero() {
               <ArrowRight size={16} aria-hidden />
             </a>
             <a
-              href="/cv.pdf"
+              href={site.cvPath}
               download
               className="inline-flex items-center gap-2 rounded-xl border border-line bg-panel px-5 py-2.5 text-sm font-medium text-snow transition-colors hover:border-line-strong hover:bg-panel-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
             >
@@ -56,7 +58,7 @@ export default function Hero() {
               <Download size={16} aria-hidden />
             </a>
             <a
-              href={`mailto:${EMAIL}`}
+              href={`mailto:${site.email}`}
               className="inline-flex items-center gap-2 rounded-xl border border-line bg-panel px-5 py-2.5 text-sm font-medium text-snow transition-colors hover:border-line-strong hover:bg-panel-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-400"
             >
               Kontakta mig

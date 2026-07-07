@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import type { CaseStudy } from "@/data/projects";
 import { projectIcons, type ProjectIconKey } from "./ProjectCard";
@@ -20,6 +21,23 @@ export default function CaseStudyPanel({
   onClose,
 }: Props) {
   const Icon = projectIcons[icon];
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // Scrollar in panelen i vyn när den öppnas, om den inte redan syns helt.
+  useEffect(() => {
+    const el = panelRef.current;
+    if (!el || el.offsetParent === null) return;
+    const rect = el.getBoundingClientRect();
+    const fullyVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+    if (fullyVisible) return;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    el.scrollIntoView({
+      behavior: reduceMotion ? "auto" : "smooth",
+      block: "start",
+    });
+  }, []);
 
   const columns = [
     [
@@ -36,7 +54,8 @@ export default function CaseStudyPanel({
   return (
     <div
       id={id}
-      className="panel-enter relative overflow-hidden rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-950/40 via-panel to-panel p-6 shadow-[0_0_60px_-22px_rgb(139_92_246/0.5)] sm:p-7"
+      ref={panelRef}
+      className="panel-enter relative scroll-mt-24 overflow-hidden rounded-2xl border border-violet-500/30 bg-gradient-to-br from-violet-950/40 via-panel to-panel p-6 shadow-[0_0_60px_-22px_rgb(139_92_246/0.5)] sm:p-7"
     >
       <div
         aria-hidden
