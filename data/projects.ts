@@ -92,7 +92,7 @@ export const projects: Project[] = [
       built:
         "Mod med smarta UI-verktyg som förenklar rerolling och ger tydlig överblick över trades direkt i spelet.",
       tech: "Java, Fabric API, UI-komponenter och event-hantering kring spelmekanik.",
-      role: "Jag har drivit projektet från idé till fungerande implementation, arbetat praktiskt i kodbasen, implementerat och justerat funktioner, testat i Minecraft, felsökt problem och itererat lösningen med AI som stöd i utvecklingsprocessen.",
+      role: "Jag har drivit projektet från idé till fungerande mod och arbetat kodnära genom hela flödet: implementerat och justerat funktioner, testat rerolling direkt i Minecraft och felsökt tills upplevelsen kändes rätt – där AI har fungerat som ett utvecklingsverktyg i arbetet.",
       learned:
         "Event-hantering i Fabric, UI-design in-game och hur automation balanseras mot spelupplevelsen.",
     },
@@ -115,7 +115,7 @@ export const projects: Project[] = [
       built:
         "Fork med fixar för wrapper-genereringen och uppdaterade projektmallar som fungerar i moderna miljöer.",
       tech: "Java, Gradle och IntelliJ plugin-utveckling.",
-      role: "Jag har identifierat och isolerat buggar i en stor befintlig kodbas, arbetat praktiskt i koden, implementerat och justerat fixar, testat i verklig miljö och itererat lösningen med AI som stöd i utvecklingsprocessen.",
+      role: "Jag har identifierat och isolerat buggar i en stor befintlig kodbas, implementerat och justerat fixar och verifierat dem i verklig miljö – med tyngd på att förstå problemet innan lösningen och att inte bryta befintlig funktionalitet.",
       learned:
         "Att navigera och förbättra en stor extern kodbas utan att bryta befintlig funktionalitet.",
     },
@@ -138,7 +138,7 @@ export const projects: Project[] = [
       built:
         "Experimentmod där villagers serialiseras till NBT och återskapas exakt – inventarier, yrken och trades bevaras.",
       tech: "Java, Fabric API och NBT-/datastrukturhantering.",
-      role: "Jag har drivit projektet från idé till fungerande implementation, arbetat praktiskt i kodbasen, implementerat och justerat funktioner, testat i Minecraft, felsökt problem och itererat lösningen med AI som stöd i utvecklingsprocessen.",
+      role: "Jag har drivit experimentet från koncept till fungerande mod genom att kombinera krav, kodnära justeringar och in-game-verifiering – med särskilt fokus på att hitta och hantera edge cases i serialiseringen.",
       learned:
         "Minecrafts datamodell på djupet: entity-serialisering, NBT och edge cases i praktiken.",
     },

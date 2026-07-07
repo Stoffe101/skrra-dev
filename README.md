@@ -55,6 +55,16 @@ npm run build   # production build
 npm run lint    # eslint
 ```
 
+## CV generation
+
+`public/cv.pdf` is generated from an HTML source — **do not edit the PDF directly**. To update the CV:
+
+1. Edit [`scripts/cv/cv.html`](scripts/cv/cv.html)
+2. Install Playwright locally if needed: `npm install -D playwright --no-save` (then `npx playwright install chromium`)
+3. Regenerate: `node scripts/cv/generate-pdf.js`
+
+The generator renders the HTML headlessly and exports a single full-bleed A4 page with clickable links.
+
 ## Project structure
 
 ```

@@ -104,13 +104,13 @@ export default function TerminalCard() {
           {site.email}
         </span>
       </div>
-      <pre className="overflow-x-auto px-4 py-5 font-mono text-[13px] leading-7 sm:px-5">
+      <pre className="overflow-x-auto px-3 py-4 font-mono text-[10.5px] leading-6 sm:px-5 sm:py-5 sm:text-[13px] sm:leading-7">
         <code>
           {lines.map((line) => (
             <span key={line.no} className="flex">
               <span
                 aria-hidden
-                className="w-8 shrink-0 select-none pr-4 text-right text-zinc-600"
+                className="w-6 shrink-0 select-none pr-2 text-right text-zinc-600 sm:w-8 sm:pr-4"
               >
                 {line.no}
               </span>

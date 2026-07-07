@@ -153,8 +153,11 @@ async function githubFetch<T>(path: string): Promise<T | null> {
 }
 
 function buildLanguages(repos: GitHubRepo[]): LanguageStat[] {
+  // Forks räknas inte med – en stor forkad kodbas (t.ex. MinecraftDev)
+  // skulle annars skeva bilden av vilka språk de egna projekten använder.
+  const ownRepos = repos.filter((repo) => !repo.fork);
   const counts = new Map<string, number>();
-  for (const repo of repos) {
+  for (const repo of ownRepos) {
     if (!repo.language) continue;
     counts.set(repo.language, (counts.get(repo.language) ?? 0) + 1);
   }

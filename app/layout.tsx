@@ -1,8 +1,12 @@
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { site } from "@/data/site";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  themeColor: "#050508",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
