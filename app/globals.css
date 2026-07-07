@@ -1,26 +1,73 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-ink: #050508;
+  --color-panel: #0a0a12;
+  --color-panel-strong: #0d0d17;
+  --color-line: #ffffff14;
+  --color-line-strong: #ffffff24;
+  --color-snow: #e9eaf2;
+  --color-mist: #a4abbd;
+  --color-faint: #858da1;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-ink);
+  color: var(--color-snow);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  background-image: radial-gradient(
+      ellipse 70% 45% at 18% -8%,
+      rgb(139 92 246 / 0.14),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 55% 35% at 92% 6%,
+      rgb(34 211 238 / 0.07),
+      transparent
+    );
+  background-repeat: no-repeat;
+}
+
+::selection {
+  background: rgb(139 92 246 / 0.4);
+}
+
+/* Mjuk intoning för case study-panelen. */
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.panel-enter {
+  animation: panel-in 0.25s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-enter {
+    animation: none;
+  }
+}
+
+/* Diskret rutnät som läggs som overlay bakom hero-sektionen. */
+.bg-grid {
+  background-image: linear-gradient(var(--color-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 75% 85% at 50% 0%, black 35%, transparent 78%);
 }
