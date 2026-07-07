@@ -1,5 +1,7 @@
 import { FileText, Mail, Send } from "lucide-react";
 import { site } from "@/data/site";
+import ContactForm from "./ContactForm";
+import LiaCard from "./LiaCard";
 
 export default function ContactCTA() {
   return (
@@ -44,6 +46,11 @@ export default function ContactCTA() {
             </a>
           </div>
         </div>
+      </div>
+
+      <div className="mt-5 grid items-stretch gap-5 lg:grid-cols-[2fr_3fr]">
+        <LiaCard />
+        <ContactForm />
       </div>
     </section>
   );

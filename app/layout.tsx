@@ -1,4 +1,5 @@
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { site } from "@/data/site";
@@ -38,6 +39,11 @@ export const metadata: Metadata = {
     title: site.title,
     description: site.description,
   },
+  // Google Search Console-token läggs i .env (GOOGLE_SITE_VERIFICATION).
+  // Saknas variabeln utelämnas taggen helt.
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
 };
 
 const personJsonLd = {
@@ -72,6 +78,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

@@ -47,7 +47,7 @@ export default function ProblemsSection() {
         id="problems-heading"
         className="mb-6 text-xs font-semibold uppercase tracking-[0.2em] text-mist"
       >
-        Problems I Like Solving
+        Problem jag gillar att lösa
       </h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {problems.map((problem) => (

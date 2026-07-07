@@ -57,13 +57,17 @@ const LANGUAGE_COLORS: Record<string, string> = {
   TypeScript: "#3b82f6",
   JavaScript: "#eab308",
   Python: "#38bdf8",
-  CSS: "#a855f7",
+  PHP: "#818cf8",
+  CSS: "#2dd4bf",
   HTML: "#f97316",
-  Kotlin: "#8b5cf6",
+  Kotlin: "#ec4899",
   "C#": "#22c55e",
   Shell: "#4ade80",
 };
+/** Neutral färg för "Övrigt" – medvetet olik alla språkfärger ovan. */
 const OTHER_COLOR = "#64748b";
+/** Reservfärger för språk som saknas i kartan, så två okända inte blir lika. */
+const EXTRA_COLORS = ["#a78bfa", "#f43f5e", "#14b8a6", "#fb923c"];
 
 /**
  * Visas när GitHub API inte går att nå. Medvetet oprecist – inga påhittade
@@ -168,10 +172,13 @@ function buildLanguages(repos: GitHubRepo[]): LanguageStat[] {
   const top = sorted.slice(0, 4);
   const restCount = sorted.slice(4).reduce((sum, [, n]) => sum + n, 0);
 
+  let extraIndex = 0;
   const stats: LanguageStat[] = top.map(([name, n]) => ({
     name,
     percent: Math.round((n / total) * 1000) / 10,
-    color: LANGUAGE_COLORS[name] ?? OTHER_COLOR,
+    color:
+      LANGUAGE_COLORS[name] ??
+      EXTRA_COLORS[extraIndex++ % EXTRA_COLORS.length],
   }));
   if (restCount > 0) {
     stats.push({
