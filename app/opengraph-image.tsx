@@ -73,7 +73,7 @@ export default function OpenGraphImage() {
                 fontSize: 22,
               }}
             >
-              christoffer@skrra.dev
+              {site.email}
             </div>
           </div>
 

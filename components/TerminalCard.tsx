@@ -1,3 +1,5 @@
+import { site } from "@/data/site";
+
 type Token = { t: string; c?: string };
 type Line = { no: string; tokens: Token[] };
 
@@ -99,7 +101,7 @@ export default function TerminalCard() {
         <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
         <span className="h-3 w-3 rounded-full bg-[#28c840]" />
         <span className="ml-3 font-mono text-xs text-faint">
-          christoffer@skrra.dev
+          {site.email}
         </span>
       </div>
       <pre className="overflow-x-auto px-4 py-5 font-mono text-[13px] leading-7 sm:px-5">

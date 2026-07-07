@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { site } from "@/data/site";
 
 export default function NotFound() {
   return (
@@ -13,7 +14,7 @@ export default function NotFound() {
           <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
           <span className="h-3 w-3 rounded-full bg-[#28c840]" />
           <span className="ml-3 font-mono text-xs text-faint">
-            christoffer@skrra.dev
+            {site.email}
           </span>
         </div>
         <div className="px-5 py-6 font-mono text-sm leading-7">
