@@ -28,7 +28,8 @@ const GENERIC_ERROR =
  * Kan bytas mot t.ex. Upstash Ratelimit utan att röra formuläret.
  */
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
-const RATE_LIMIT_MAX = 5;
+// Tillfälligt höjd under felsökning (var 5) så legitima tester inte blockas.
+const RATE_LIMIT_MAX = 20;
 const submissionLog = new Map<string, number[]>();
 
 function isRateLimited(ip: string): boolean {
@@ -81,10 +82,17 @@ export async function sendContactMessage(
   _prevState: ContactFormState,
   formData: FormData
 ): Promise<ContactFormState> {
+  // Säker felsökningslogg: aldrig nyckelvärden, aldrig meddelandeinnehåll.
+  console.log("[contact-form] action started", {
+    hasResendApiKey: Boolean(process.env.RESEND_API_KEY),
+    hasResendFrom: Boolean(process.env.RESEND_FROM),
+  });
+
   // Honeypot: fältet är osynligt för människor. Ifyllt ⇒ bot.
   // Låtsas lyckas så att skript inte får någon signal att justera mot.
   const honeypot = formData.get("company");
   if (typeof honeypot === "string" && honeypot.length > 0) {
+    console.warn("[contact-form] honeypot triggered");
     return {
       status: "success",
       message: "Tack! Ditt meddelande har skickats.",
@@ -102,6 +110,12 @@ export async function sendContactMessage(
     message.length < LIMITS.messageMin ||
     !EMAIL_PATTERN.test(email)
   ) {
+    console.warn("[contact-form] validation failed", {
+      hasName: Boolean(name),
+      hasSubject: Boolean(subject),
+      emailValid: EMAIL_PATTERN.test(email),
+      messageLength: message.length,
+    });
     return { status: "error", message: GENERIC_ERROR };
   }
 
@@ -109,11 +123,16 @@ export async function sendContactMessage(
   const ip =
     headerList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (isRateLimited(ip)) {
+    // Maskad IP: endast första oktetten/blocket loggas.
+    console.warn("[contact-form] rate limited", {
+      ipPrefix: ip.split(/[.:]/)[0] ?? "unknown",
+    });
     return { status: "error", message: GENERIC_ERROR };
   }
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
+    console.error("[contact-form] missing RESEND_API_KEY");
     return {
       status: "error",
       message: `Formuläret är inte tillgängligt just nu – maila gärna direkt till ${site.email}.`,
@@ -121,6 +140,7 @@ export async function sendContactMessage(
   }
 
   const resend = new Resend(apiKey);
+  // Exakt denna avsändare används om RESEND_FROM inte är satt.
   const from =
     process.env.RESEND_FROM || "skrra.dev Kontakt <noreply@skrra.dev>";
 
@@ -142,18 +162,45 @@ export async function sendContactMessage(
     </div>
   `;
 
-  const { error } = await resend.emails.send({
-    from,
-    to: [site.email],
-    replyTo: email,
-    subject: `[skrra.dev] ${subject}`,
-    text,
-    html,
+  console.log("[contact-form] sending via Resend", {
+    to: site.email,
+    fromConfigured: Boolean(process.env.RESEND_FROM),
+    replyToValid: EMAIL_PATTERN.test(email),
   });
 
-  if (error) {
+  try {
+    const { error } = await resend.emails.send({
+      from,
+      to: [site.email],
+      replyTo: email,
+      subject: `[skrra.dev] ${subject}`,
+      text,
+      html,
+    });
+
+    if (error) {
+      // Resend-fel innehåller name/message och ibland statusCode.
+      const details = error as {
+        name?: string;
+        message?: string;
+        statusCode?: number;
+      };
+      console.error("[contact-form] Resend send failed", {
+        name: details.name,
+        message: details.message,
+        statusCode: details.statusCode,
+      });
+      return { status: "error", message: GENERIC_ERROR };
+    }
+  } catch (thrown) {
+    const err = thrown instanceof Error ? thrown : new Error(String(thrown));
+    console.error("[contact-form] Resend send threw", {
+      name: err.name,
+      message: err.message,
+    });
     return { status: "error", message: GENERIC_ERROR };
   }
 
+  console.log("[contact-form] sent successfully");
   return { status: "success", message: "Tack! Ditt meddelande har skickats." };
 }
