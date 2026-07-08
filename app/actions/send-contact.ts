@@ -28,8 +28,7 @@ const GENERIC_ERROR =
  * Kan bytas mot t.ex. Upstash Ratelimit utan att röra formuläret.
  */
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
-// Tillfälligt höjd under felsökning (var 5) så legitima tester inte blockas.
-const RATE_LIMIT_MAX = 20;
+const RATE_LIMIT_MAX = 5;
 const submissionLog = new Map<string, number[]>();
 
 function isRateLimited(ip: string): boolean {
@@ -82,17 +81,10 @@ export async function sendContactMessage(
   _prevState: ContactFormState,
   formData: FormData
 ): Promise<ContactFormState> {
-  // Säker felsökningslogg: aldrig nyckelvärden, aldrig meddelandeinnehåll.
-  console.log("[contact-form] action started", {
-    hasResendApiKey: Boolean(process.env.RESEND_API_KEY),
-    hasResendFrom: Boolean(process.env.RESEND_FROM),
-  });
-
   // Honeypot: fältet är osynligt för människor. Ifyllt ⇒ bot.
   // Låtsas lyckas så att skript inte får någon signal att justera mot.
   const honeypot = formData.get("company");
   if (typeof honeypot === "string" && honeypot.length > 0) {
-    console.warn("[contact-form] honeypot triggered");
     return {
       status: "success",
       message: "Tack! Ditt meddelande har skickats.",
@@ -110,12 +102,6 @@ export async function sendContactMessage(
     message.length < LIMITS.messageMin ||
     !EMAIL_PATTERN.test(email)
   ) {
-    console.warn("[contact-form] validation failed", {
-      hasName: Boolean(name),
-      hasSubject: Boolean(subject),
-      emailValid: EMAIL_PATTERN.test(email),
-      messageLength: message.length,
-    });
     return { status: "error", message: GENERIC_ERROR };
   }
 
@@ -123,10 +109,6 @@ export async function sendContactMessage(
   const ip =
     headerList.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (isRateLimited(ip)) {
-    // Maskad IP: endast första oktetten/blocket loggas.
-    console.warn("[contact-form] rate limited", {
-      ipPrefix: ip.split(/[.:]/)[0] ?? "unknown",
-    });
     return { status: "error", message: GENERIC_ERROR };
   }
 
@@ -162,12 +144,6 @@ export async function sendContactMessage(
     </div>
   `;
 
-  console.log("[contact-form] sending via Resend", {
-    to: site.email,
-    fromConfigured: Boolean(process.env.RESEND_FROM),
-    replyToValid: EMAIL_PATTERN.test(email),
-  });
-
   try {
     const { error } = await resend.emails.send({
       from,
@@ -201,6 +177,5 @@ export async function sendContactMessage(
     return { status: "error", message: GENERIC_ERROR };
   }
 
-  console.log("[contact-form] sent successfully");
   return { status: "success", message: "Tack! Ditt meddelande har skickats." };
 }
